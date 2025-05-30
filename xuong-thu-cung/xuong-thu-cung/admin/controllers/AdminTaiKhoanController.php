@@ -37,10 +37,10 @@ class AdminTaiKhoanController
 
             $errors = [];
             if (empty($ho_ten)) {
-                $errors['ho_ten'] = 'Tên  không được để trống';
+                $errors['ho_ten'] = 'Tên không được để trống';
             }
             if (empty($email)) {
-                $errors['email'] = 'Email  không được để trống';
+                $errors['email'] = 'Email không được để trống';
             }
             $_SESSION['error'] = $errors;
 
