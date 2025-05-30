@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class AdminTaiKhoan
 {
@@ -9,13 +9,14 @@ class AdminTaiKhoan
         $this->conn = connectDB();
     }
 
-    public function getAllTaiKhoan($chuc_vu_id){
+    public function getAllTaiKhoan($chuc_vu_id)
+    {
         try {
             $sql = 'SELECT * FROM tai_khoans WHERE chuc_vu_id = :chuc_vu_id';
 
             $stmt = $this->conn->prepare($sql);
 
-            $stmt->execute([':chuc_vu_id'=>$chuc_vu_id]);
+            $stmt->execute([':chuc_vu_id' => $chuc_vu_id]);
 
             return $stmt->fetchAll();
         } catch (Exception $e) {
@@ -23,10 +24,13 @@ class AdminTaiKhoan
         }
     }
 
-    public function insertTaiKhoan($ho_ten, $email, $password, $chuc_vu_id){
+    public function insertTaiKhoan($ho_ten, $email, $password, $chuc_vu_id)
+    {
         try {
-            $sql = 'INSERT INTO tai_khoans (ho_ten, email, mat_khau, chuc_vu_id)
-                    VALUES (:ho_ten, :email, :password, :chuc_vu_id)';
+            $sql = 'INSERT INTO tai_khoans 
+                (ho_ten, email, mat_khau, chuc_vu_id, ngay_sinh, so_dien_thoai, gioi_tinh, dia_chi, trang_thai)
+                VALUES 
+                (:ho_ten, :email, :password, :chuc_vu_id, :ngay_sinh, :so_dien_thoai, :gioi_tinh, :dia_chi, :trang_thai)';
 
             $stmt = $this->conn->prepare($sql);
 
@@ -35,13 +39,17 @@ class AdminTaiKhoan
                 ':email' => $email,
                 ':password' => $password,
                 ':chuc_vu_id' => $chuc_vu_id,
+                ':ngay_sinh' => date('Y-m-d'),
+                ':so_dien_thoai' => '', 
+                ':gioi_tinh' => 1,
+                ':dia_chi' => '',
+                ':trang_thai' => 1
             ]);
 
             return true;
         } catch (Exception $e) {
             echo "lỗi" . $e->getMessage();
-            
+            return false;
         }
     }
-  
 }
