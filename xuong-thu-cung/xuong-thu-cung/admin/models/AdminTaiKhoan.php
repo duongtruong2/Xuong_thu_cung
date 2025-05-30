@@ -46,4 +46,110 @@ class AdminTaiKhoan
             return $e->getMessage();
         }
     }
+
+
+    public function getDetailTaiKhoan($id)
+    {
+        try {
+            $sql = 'SELECT * FROM tai_khoans WHERE id = :id';
+
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->execute([':id' => $id]);
+
+            return $stmt->fetch();
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+        }
+    }
+
+
+    public function updateTaiKhoan($id, $ho_ten, $email, $so_dien_thoai, $trang_thai)
+    {
+        try {
+            $sql = 'UPDATE tai_khoans
+                    SET 
+                        ho_ten = :ho_ten,
+                        email = :email,
+                        so_dien_thoai = :so_dien_thoai,
+                        trang_thai = :trang_thai
+                    WHERE id = :id';
+
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->execute([
+                ':id' => $id,
+                ':ho_ten' => $ho_ten,
+                ':email' => $email,
+                ':so_dien_thoai' => $so_dien_thoai,
+                ':trang_thai' => $trang_thai
+            ]);
+            return true;
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+        }
+    }
+
+    public function resetPassword($id,  $mat_khau)
+    {
+        try {
+            $sql = 'UPDATE tai_khoans
+                    SET 
+                        mat_khau = :mat_khau
+                    WHERE id = :id';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([
+                ':mat_khau' => $mat_khau,
+                ':id' => $id
+            ]);
+            return true;
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+        }
+    }
+
+    public function updateKhachHang($id, $ho_ten, $email, $so_dien_thoai, $ngay_sinh, $gioi_tinh, $dia_chi, $trang_thai)
+    {
+        try{
+             $sql = 'UPDATE tai_khoans
+                    SET 
+                        ho_ten = :ho_ten,
+                        email = :email,
+                        so_dien_thoai = :so_dien_thoai,
+                        ngay_sinh = :ngay_sinh,
+                        gioi_tinh = :gioi_tinh,
+                        dia_chi = :dia_chi,
+                        trang_thai = :trang_thai
+                    WHERE id = :id';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([
+                ':id' => $id,
+                ':ho_ten' => $ho_ten,
+                ':email' => $email,
+                ':so_dien_thoai' => $so_dien_thoai,
+                ':ngay_sinh' => $ngay_sinh,
+                ':gioi_tinh' => $gioi_tinh,
+                ':dia_chi' => $dia_chi,
+                ':trang_thai' => $trang_thai
+            ]);
+            return true;
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();  
+        }
+    }
+
+    public function checkEmailExists($email)
+    {
+        try {
+            $sql = 'SELECT COUNT(*) as count FROM tai_khoans WHERE email = :email';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':email' => $email]);
+            $result = $stmt->fetch();
+            return $result['count'] > 0;
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+            return false;
+        }
+    }
+
 }
