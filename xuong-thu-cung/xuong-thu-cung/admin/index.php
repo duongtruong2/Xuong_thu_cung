@@ -62,4 +62,12 @@ match ($act) {
 
     //route reset password
     'reset-password' => (new AdminTaiKhoanController())->resetPassword(),
+
+    // Quản lý tài khoản khách hàng
+    'list-tai-khoan-khach-hang' => (new AdminTaiKhoanController())->danhSachKhachHang(),
+    'form-sua-khach-hang' => (new AdminTaiKhoanController())->formEditKhachHang(),
+    'sua-khach-hang' => (new AdminTaiKhoanController())->postEditKhachHang(),
+    'chi-tiet-khach-hang' => (new AdminTaiKhoanController())->deltailKhachHang(),
+
+    
 };

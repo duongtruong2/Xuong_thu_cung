@@ -110,8 +110,8 @@ class AdminTaiKhoan
 
     public function updateKhachHang($id, $ho_ten, $email, $so_dien_thoai, $ngay_sinh, $gioi_tinh, $dia_chi, $trang_thai)
     {
-        try{
-             $sql = 'UPDATE tai_khoans
+        try {
+            $sql = 'UPDATE tai_khoans
                     SET 
                         ho_ten = :ho_ten,
                         email = :email,
@@ -134,22 +134,48 @@ class AdminTaiKhoan
             ]);
             return true;
         } catch (Exception $e) {
-            echo "lỗi" . $e->getMessage();  
+            echo "lỗi" . $e->getMessage();
         }
     }
 
-    public function checkEmailExists($email)
+    public function checkLogin($email, $mat_khau)
     {
         try {
-            $sql = 'SELECT COUNT(*) as count FROM tai_khoans WHERE email = :email';
+            $sql = "SELECT * FROM tai_khoans WHERE email = :email";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':email' => $email]);
-            $result = $stmt->fetch();
-            return $result['count'] > 0;
+            $user = $stmt->fetch();
+            if ($user && password_verify($mat_khau, $user['mat_khau'])) {
+                if ($user['chuc_vu_id'] == 1) {
+                    if ($user['trang_thai'] == 1) {
+                        return $user['email']; // Trường hợp đăng nhập thành công
+                    } else {
+                        return "Tài khoản bị cấm";
+                    }
+                } else {
+                    return "Tài khoản không có quyền đăng nhập";
+                }
+            } else {
+                return "Bạn nhập sai thông tin mật khẩu hoặc tài khoản";
+            }
         } catch (Exception $e) {
             echo "lỗi" . $e->getMessage();
-            return false;
         }
     }
 
+    public function getTaiKhoanformEmail($email){
+       try {
+            $sql = 'SELECT * FROM tai_khoans WHERE email = :email';
+
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->execute([
+                ':email' => $email
+            ]);
+
+            return $stmt->fetch();
+        } catch (Exception $e) {
+            echo "lỗi" . $e->getMessage();
+        }
+    }
 }
