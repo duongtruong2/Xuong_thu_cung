@@ -352,7 +352,7 @@ class AdminSanPhamController
         }
     }
 
-    public function updateTrangThaiBinhLuan()
+     public function updateTrangThaiBinhLuan()
     {
         $id_binh_luan = $_POST['id_binh_luan'];
         $name_view = $_POST['name_view'];

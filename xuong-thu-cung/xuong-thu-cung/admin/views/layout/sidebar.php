@@ -73,11 +73,22 @@
                   <p>Tài khoản quản trị</p>
                 </a>
               </li>
-              
+              <li class="nav-item">
+                <a href="<?= BASE_URL_ADMIN . '?act=list-tai-khoan-khach-hang' ?>" class="nav-link">
+                  <i class="nav-icon far fa-user"></i>
+                  <p>Tài khoản khách hàng</p>
                 </a>
               </li>
-            </ul>
+              <li class="nav-item">
+                <a href="<?= BASE_URL_ADMIN . '?act=form-sua-thong-tin-ca-nhan-quan-tri' ?>" class="nav-link">
+                  <i class="nav-icon far fa-user"></i>
+                  <p>Tài khoản cá nhân</p>
+                </a>
+              </li>
+              </a>
           </li>
+        </ul>
+        </li>
 
         </ul>
       </nav>

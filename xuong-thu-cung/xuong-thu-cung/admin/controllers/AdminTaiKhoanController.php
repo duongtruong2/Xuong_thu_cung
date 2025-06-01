@@ -249,14 +249,18 @@ class AdminTaiKhoanController
     {
         $id_Khach_hang = $_GET['id_khach_hang'];
         $khachHang = $this->modelTaiKhoan->getDetailTaiKhoan($id_Khach_hang);
+    // var_dump($id_Khach_hang); 
+
         $listDonHang = $this->modelDonHang->getDonHangFromKhachHang($id_Khach_hang);
-        $listSanPham = $this->modelSanPham->getBinhLuanFromKhachHang($id_Khach_hang);
+        $listBinhLuan = $this->modelSanPham->getBinhLuanFromKhachHang($id_Khach_hang);
+        // var_dump($listBinhLuan); 
+        // die;
         require_once './views/taikhoan/khachhang/detailKhachHang.php';
     }
 
     public function formLogin()
     {
-        require_once './views/taikhoan/login.php';
+        require_once './views/auth/formLogin.php';
         deleteSessionError();
         exit();
     }
@@ -293,7 +297,8 @@ class AdminTaiKhoanController
         }
     }
 
-        public function formEditCaNhanQuanTri(){
+    public function formEditCaNhanQuanTri()
+    {
         $email = $_SESSION['user_admin'];
         $thongTin = $this->modelTaiKhoan->getTaiKhoanformEmail($email);
         // var_dump($thongTin);die;
@@ -301,16 +306,19 @@ class AdminTaiKhoanController
         deleteSessionError();
     }
 
-    public function postEditMatKhauCaNhan(){
+   
+
+    public function postEditMatKhauCaNhan()
+    {
         // var_dump($_POST);die;
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $old_pass = $_POST['old_pass'];
             $new_pass = $_POST['new_pass'];
             $confirm_pass = $_POST['confirm_pass'];
 
-            
 
-            
+
+
             //Lấy thông tin user từ session
             $user = $this->modelTaiKhoan->getTaiKhoanformEmail($_SESSION['user_admin']);
 
@@ -348,17 +356,60 @@ class AdminTaiKhoanController
                     $_SESSION['flash'] = true;
                     header("Location: " . BASE_URL_ADMIN . '?act=form-sua-thong-tin-ca-nhan-quan-tri');
                 }
-            }else{
+            } else {
                 // Lỗi thì lưu lỗi vào session
 
                 $_SESSION['flash'] = true;
 
                 header("Location: " . BASE_URL_ADMIN . '?act=form-sua-thong-tin-ca-nhan-quan-tri');
                 exit();
-                
             }
-   
         }
     }
 
+    public function postEditCaNhanQuanTri()
+    {
+        if (!isset($_SESSION['user_admin'])) {
+            header("Location: " . BASE_URL_ADMIN . '?act=login-admin');
+            exit();
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $email = $_SESSION['user_admin']; // Lấy email gốc từ session
+            $ho_ten = $_POST['ho_ten'] ?? '';
+            $so_dien_thoai = $_POST['so_dien_thoai'] ?? '';
+            $ngay_sinh = $_POST['ngay_sinh'] ?? '';
+            $gioi_tinh = $_POST['gioi_tinh'] ?? '';
+            $dia_chi = $_POST['dia_chi'] ?? '';
+    
+            $errors = [];
+            if (empty($ho_ten)) $errors['ho_ten'] = 'Họ tên không được để trống';
+            if (empty($so_dien_thoai)) $errors['so_dien_thoai'] = 'Số điện thoại không được để trống';
+            if (empty($ngay_sinh)) $errors['ngay_sinh'] = 'Ngày sinh không được để trống';
+            if (empty($dia_chi)) $errors['dia_chi'] = 'Địa chỉ không được để trống';
+    
+            $_SESSION['error'] = $errors;
+    
+            if (empty($errors)) {
+                $user = $this->modelTaiKhoan->getTaiKhoanformEmail($email);
+                $this->modelTaiKhoan->updateKhachHang(
+                    $user['id'],
+                    $ho_ten,
+                    $email, // LUÔN dùng email gốc
+                    $so_dien_thoai,
+                    $ngay_sinh,
+                    $gioi_tinh,
+                    $dia_chi,
+                    $user['trang_thai']
+                );
+                $_SESSION['success'] = 'Cập nhật thành công!';
+                header("Location: " . BASE_URL_ADMIN . '?act=form-sua-thong-tin-ca-nhan-quan-tri');
+                exit();
+            } else {
+                $_SESSION['flash'] = true;
+                header("Location: " . BASE_URL_ADMIN . '?act=form-sua-thong-tin-ca-nhan-quan-tri');
+                exit();
+            }
+        }
+    }
 }
