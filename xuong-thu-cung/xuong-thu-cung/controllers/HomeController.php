@@ -10,7 +10,7 @@ class HomeController
     }
     public function home()
     {
-        echo "Đây là homehome";
+        require_once '../views/home.php';
        
     }
     public function trangChu()
@@ -18,12 +18,6 @@ class HomeController
 
         echo "Đây là trang chu cua toitoi";
     }
-       public function danhSachSanPham()
-    {
-        // echo "Đây là danh sach san pham";
-        $listProduct = $this->modelSanPham->getAllProduct();
-        // var_dump($listProduct);die();
-        require_once './views/listProduct.php';
-    }
+
 
 }
