@@ -4,20 +4,32 @@ class HomeController
 {
 
     public $modelSanPham;
+
     public function __construct()
     {
          $this->modelSanPham = new SanPham();
     }
-    public function home()
-    {
-        require_once '../views/home.php';
-       
+   public function home(){
+        $listSanPham = $this->modelSanPham->getAllSanPham();
+        require_once './Views/home.php';
     }
-    public function trangChu()
-    {
 
-        echo "Đây là trang chu cua toitoi";
+    public function chiTietSanPham(){
+        $id =$_GET['id_san_pham'];
+
+        $sanPham =$this->modelSanPham->getDetailSanPham($id);
+        $listAnhSanPham = $this->modelSanPham->getListAnhSanPham($id);
+        $listBinhLuan = $this->modelSanPham->getBinhLuanFromSanPham($id);
+        $listSanPhamCungDanhMuc = $this->modelSanPham->getListSanPhamDanhMuc($sanPham['danh_muc_id']);
+
+        if(!$sanPham){
+            require_once './views/detaiSanPham.php';
+        }else{
+            header("Location: " . BASE_URL);
+            exit();
+        }
     }
+
 
 
 }
