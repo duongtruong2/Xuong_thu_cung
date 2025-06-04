@@ -1,6 +1,6 @@
-<?php 'layout/header.php' ?>
+<?php require_once 'layout/header.php'; ?>
 
-<?php 'layout/menu.php' ?>
+<?php require_once 'layout/menu.php'; ?>
 
 <main>
     <!-- breadcrumb area start -->
@@ -22,7 +22,6 @@
         </div>
     </div>
     <!-- breadcrumb area end -->
-
 
     <!-- page main wrapper start -->
     <div class="shop-main-wrapper section-padding pb-0">
@@ -93,6 +92,7 @@
                         </div>
                     </div>
                     <!-- product details inner end -->
+
                     <!-- product details reviews start -->
                     <div class="product-details-reviews section-padding pb-0">
                         <div class="row">
@@ -224,9 +224,7 @@
         </div>
     </section>
     <!-- related products area end -->
-
 </main>
-
 
 
 
