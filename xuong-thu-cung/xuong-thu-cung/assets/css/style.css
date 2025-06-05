@@ -6064,3 +6064,13 @@ blockquote {
 }
 
 /*----- footer area end -----*/
+
+// Add custom styles for the success alert
+.alert-success {
+    max-width: 500px; /* Adjust max width as needed */
+    margin: 20px auto; /* Center the alert and add space above/below */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 5px; /* Slightly rounded corners */
+    padding: 15px 20px; /* Add padding inside the alert */
+    text-align: center;
+}
